@@ -1,0 +1,37 @@
+button{
+  padding: 3.em 8.em;
+  border: 1px solid rgba(0,0,0,.5);
+  background: #58a linear-gradient(hsla(0,0%,100%,.2),transparent);
+  border-radius: .2em;
+  box-shadow: 0 .05em .05em grey;
+  color: white;
+  text-shadow: 0 -.05em .05em #335166;
+  font-size: 125%;
+  line-height: 1.5;
+}
+button.cencel{
+  background-color: #c00;
+}
+button.ok{
+  background-color: #6b0;
+}
+hr{
+  height: .5em;
+  background-color: currentColor;
+}
+.text{
+  margin: auto;
+  width: 140px;
+  height: 140px;
+  border: 10px solid hsla(0,0%,100%,.5);
+  background: yellowgreen;
+  box-shadow: 0 0 0 10px #655;
+  background-clip: border-box;
+  border-radius: 50%;
+  text-align: center;
+}
+p{
+  text-align: center;
+  position: relative;
+  padding-top: 18px;
+}

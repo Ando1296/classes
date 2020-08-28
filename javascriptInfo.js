@@ -495,27 +495,27 @@ alert( str.slice(1, 3) ); // garbage (two pieces from different surrogate pairs)
  // as map.entries(). So we get a plain object with same key/values as the map
 //note that if as key we have some objects and try  few of them it will copy only first's value
 //string and numbers also work '1' and 1 key it will take first undefined 'undefined' null true ans so on 
-let objectForMap = {
-  name: 'John',
-  age: 15
-}
-let arrayForMap = ['someArray'];
-let map = new Map([
-  [undefined, 'firstUndefined'],
-  ['undefined', 'second'],
-  [null, 'first'],
-  ['null', 'second'],
-  [1, 'frist'],
-  ['1', 'second'],
-  ['true', 'first'],
-  [true, 'second'],
-  [{},'first'],
-  [objectForMap, 'second'],
-  [[156], 'firstArray'],
-  [arrayForMap, 'SecondArray']
-]);
-let obj = Object.fromEntries(map);
-console.log(obj)
+// let objectForMap = {
+//   name: 'John',
+//   age: 15
+// }
+// let arrayForMap = ['someArray'];
+// let map = new Map([
+//   [undefined, 'firstUndefined'],
+//   ['undefined', 'second'],
+//   [null, 'first'],
+//   ['null', 'second'],
+//   [1, 'frist'],
+//   ['1', 'second'],
+//   ['true', 'first'],
+//   [true, 'second'],
+//   [{},'first'],
+//   [objectForMap, 'second'],
+//   [[156], 'firstArray'],
+//   [arrayForMap, 'SecondArray']
+// ]);
+// let obj = Object.fromEntries(map);
+// console.log(obj)
 
 // {1: "second", 156: "firstArray", undefined: "second", null: "second", true: "second", [object Object]: "second", someArray: "SecondArray"}
 // 1: "second"
@@ -574,4 +574,463 @@ console.log(obj)
 // ];
 // values = Array.from(new Set(values))
 //  when we alert set it return object set and when we will alert new map it will gave object map
+
+
+                                    //WeakMap() and WeakSet()
+//
+//let john = {name: 16}
+/* let map = new Map();
+map.set(john, "");
+john = null; // overwrite John to null now in Map we have some key of object it will not be removed 
+we can get it only with map.keys() or entries() -- and so on but cant get it by Map.get(key) because we dont have key
+WeakMap is fundamenttally different in this aspect. it doeasn't prevent garbage collection of key objects.
+
+let weakMap = new WeakMap(); 
+let obj = {};
+weakMap.set(obj, 'something'); 
+obj = null;
+weakMap.set('strning', 'somethg') // can't use string as the key only can use refference type;
+
+//
+let john = {name: 'John'}
+weakMap.set(john);
+john = null // after overwriting our variable 
+// john is removed from the memory
+if we compare WeakMap() with Map() in weakmap it will be removed automatically in map it will stay
+
+      WeakMap() does not support iteration and methods keys() values() entries();
+      has only the following methods
+//
+WeakMap.get(key);
+WeakMap.set(key);
+WeakMap.has(key);
+WeakMap.delete(key); finsih...
+
+                                          WeakSet()
+
+//WeakSet() behave similarly 
+we cann only add object primitives not working
+an object exist if it reachable from somewhere else 
+it supports as weakMap has() add() delete() methods but noooottt size() keys()
+let messages = [
+  {text: "Hello", from: "John"},
+  {text: "How goes?", from: "John"},
+  {text: "See you soon", from: "Alice"}
+];
+let weakSet = new WeakSet();
+for(const obj of messages){
+  weakSet.add(obj);
+}
+
+let weakMap = new WeakMap();
+
+                                          Destructuring 
+//
+The two most used data structures in JavaScript are Object and Array
+      Array Distructuring
+let array = ['name', 'surname'];
+//destructuring assignment 
+//firstName = array[0];
+//lastName = array[1]; // instead of this we can write takiny
+
+let [firstName, lastName] = array;
+ex2 let [firstName, lastName] = 'hellow world'.split(' ');
+
+  /It's called destructuring assignment, because it destructuries by copying items into variables.
+  but the array itself is not modified.
+  it's just a short a way to write.
+
+let [firstname, lastname] = array;
+instead of firstName = array[0];
+lastName = array[1];
+
+  it is ignoring element by commas (,)
+ex let array = ['cmeruk', 'emish', 'tandz'];
+let [barev, , arev] = array;
+console.log(arev) => 'tandz'
+
+  works with any iterable on the right side 
+ex let [a,b,c] = 'abc'; console.log(a) => 'a'
+ex let [barev, az, vonces] = new Set(['barev', 'Hajox', 'aziz']);
+console.log(barev) --> works with any iterable // barev;
+
+  Assign to anything at the left side 
+let user = {};
+[user.name, user.surName] = 'ilya kantor'.split(' ');
+console.log(user.name) ==> ilya
+
+  Looping with the entries 
+  previous we saw Object.entries(obj);
+  we can use it with destructuring to loop over keys-and-values of an object;
+let user = {
+  name: 'John',
+  age: 25
+}
+for(let [key, value] of Object.entries(user)){
+  console.log(`${key}: ${value}`) ==> namen: 'John' than age: 25
+}
+
+  Swap varibale
+  A well-known swapping nvalues of the variables
+let [name, age] = ['John', 26] // same ase let name = 'john'; let age = 25;
+//then 
+[name, age] = [age, name]; now age is 'john' age == 'john'
+  we can swap more then two variables this way;:
+
+    The ...rest;
+let array = ['name', 'surname', 26, 27, 28];
+let [arman, tsaturyan, ...age] = array;
+arman --> 'name'; tsaturyan --> 'surname'; age[0] --> 26; age[1] --> 27; age[2]--> 28;
+
+    Default values
+  /if there are fewer values in the array then variables in the assignment, there will be no error. Absent(bacaka) values are considered undefined
+/ex
+let [first, last] = [] ==> first == undefined, last == undefined;
+  /if we want a default value to replace Absent values we can set it by# =
+//defeult values
+ex
+let [first = 'something', last = 'something else'] = ['Armen'];
+now first is 'Armen' last is 'something else'
+  /default values can be more complex(bard) expressions or even function calls.they are evaluated if the value is not provided(hashvi arac)
+  here we use two promt functions for two defaults. but it will run only for the missing one;
+ex
+let [name = prompt('pls enter name'), surname = promt('please enter a name')] = ['Syuzanna'];
+now will run promt and ask please enter a name for surname but name now is 'Syuzanna'
+
+    Object destructuring
+  /the destructuring assignment also work with objects
+  /the basic syntax is 
+let {var1, var2} = {var1:…, var2:…}
+  we have an existing object in the right side, that we want to split into variables. the levt side contains a pattern for the 
+  corresponding(hamapatasxan) properties. in the simple case thats a list of variables names in {}
+ex
+let user = {
+  name: 'Andranik',
+  surname: 'Tsaturyan',
+  age: 25
+}
+  let {name, surname, age} = user ==> now we have same properties names variables 
+  the order does not metter it will work with same variable name and same propertie name
+
+  if we want to assign a property to a variable with another name, for instance options.width to go into the variable named w
+  then we can set it using collon.
+let options = {
+  title: "Menu",
+  width: 100,
+  height: 200
+};
+let {width: w, height: h, title} = options;
+  now we set variable w and set for its value options.width
+  now w is 100 h is 200 and title is options.title same name
+
+  for missing properties we can set default values 
+let options = {
+  title: 'menu'
+}
+let {witdh = 100, height = 200, title = 'something else'} = options;
+  now witdh is 100, height is 200 titles is 'menu' 
+    like arrays default values can be any expression or function call;
+let options = {
+  title: "Menu"
+};
+let {width = prompt("width?"), title = prompt("title?")} = options;
+  we also can combine(hamatexel) both the colon(verjaket) and equality(havasarutyun);
+ex
+let options = {
+  title: "Menu"
+};
+let {width: w = 100, height: h = 200, title} = options;
+  now if we dont have in options width then w will be 100 as default, same h will be 200 because it's also does not exist in options
+  and title will be 'menu'
+
+    if we have complex object with many properties. we can extract(hanel) only what we need.
+let user = {
+  name: 'andranik',
+  surname: 'tsaturyan',
+  age: 26
+}
+  let {name} = user // now we have name variable with user's value of the name propertie
+
+    The rest pattern ...Rest
+    what if the object have more properties then we have variables? can we take some and then assign the rest somewhere
+    we can use the rest pattern just we use with arrays. it's not supported by some older browsers but works in modern ones.
+let options = {
+  title: "Menu",
+  height: 200,
+  width: 100
+};
+let {title, ...Rest} = options; // abizalovka chi anuny rest lini 
+title now is 'menu' 
+Rest now is an object with rest properties of options
+Rest.height == 200 ; Rest.width == 100;
+
+          This won’t work:
+let title, width, height;
+// error in this line
+{title, width, height} = {title: "Menu", width: 200, height: 100};
+  becaues {title, width, height} == {title: undefined, width: undefine, height: undefined} and it is have its own reference
+  if we want to work like that without error we should add parentheses(pakagcer) ;
+let title, width, height;
+({title, width, height} = {title: 'menu', width: 200, height: 100});
+title variable now is 'menu' and so on 
+
+      Nested destructuring
+    /if an object or arrays contain other array or object(nested), we can use more complex left-side pattern to extract(hanel) deeper()
+    portions.(maser).
+ex
+let options = {
+  size: {
+    width: 100,
+    height: 200
+  },
+  items: ["Cake", "Donut"],
+  extra: true
+};
+let {
+  size: {width, height},
+  items: [item1, item2],
+  length = 'default'
+} = options 
+  now we declare width, height, length,(by default because options does not have length property), item1, item varieables 
+  we dont declare size or item variables we wrote to understand where take them.
+
+                    Smart Function parameters.
+                there are time when function have more then one parameters most of wich are optional. That's optionally true for 
+                user interfaces.Imagine a function thats create a menu.it may have a width height title and so on.
+/function showMenu(title = "Untitled", width = 200, height = 100, items = []) {
+  // ...
+} //bad way to write such a function
+                in the real life is a problem to remember the order of the parapeters so what to do?
+                below is the solution;
+let options = {
+  title: "My menu",
+  items: ["Item1", "Item2"]
+};
+function something({title = 'Default', witdh = 200, height = 100, items = []}){
+  alert( `${title} ${width} ${height}` ); // My Menu 200 100
+  alert( items ); // Item1, Item2 
+}
+something(options) :D yes starting to love programming
+        we can use more complex destructuring with nested objects and colon mappings
+let options = {
+  title: "My menu",
+  items: ["Item1", "Item2"],
+  height: 15,
+  width: 20,
+};
+function showMenu({
+  title = "Untitled",
+  width: w = 100,  // width goes to w
+  height: h = 200, // height goes to h
+  items: [item1, item2] // items first element goes to item1, second to item2
+}) {
+  alert( `${title} ${w} ${h}` ); // My Menu 100 200
+  alert( item1 ); // Item1
+  alert( item2 ); // Item2
+}
+
+showMenu(options);
+              showMenu({}) its okay;
+              showMenu() it will give error 
+              we can fix it to give default {}
+function showMenu({ title = "Menu", width = 100, height = 200 } = {}) {
+  alert( `${title} ${width} ${height}` );
+}
+showMenu()
+
+exercises 
+let user = { name: "John", years: 30 };
+let {name, years, isAdmin = false} = user;
+
+  let salaries = {
+  "John": 100,
+  "Pete": 300,
+  "Mary": 250
+};
+function forSalaries(salaries){
+  let max = 0;
+  let maxName = null;
+  for(const [name, payed] of Object.entries()){
+    if(payed > max){
+      max = payed;
+      maxName = name;
+    }
+    return maxName;
+  }
+}
+
+
+
+
+
+                                                  Date and time
+
+        //let's meet a new in built-in object. <<Date>> It stores the date, time and provides methods for date/time managment(karavarum)
+        //It stores the date, time and provides methods for date/time managment.
+        //For instance, we can use it to store creation/modification times, to measure time, or just to print out the current date.
+        //      Creation
+        //to create a new Date() object
+        let date = new Date() current date 
+date = new Date().toString().split(' ') --> ["Wed", "Aug", "19", "2020", "17:00:05", "GMT+0400", "(Armenia", "Standard", "Time)"]
+          another if we write new Date(0)
+date = new Date(0).toString().split(' ') --> ["Thu", "Jan", "01", "1970", "04:00:00", "GMT+0400", "(Armenia", "Standard", "Time)"]
+date = new Date(24*3600*1000).toString().split(' ') -->  ["Wed", "Jan", "02", "1970", "04:00:00", "GMT+0400", "(Armenia", "Standard", "Time)"]       
+        it representing by miliseconds thats why it add miliseconds to 1970 jan 01
+date = new Date(-24*3600*1000) //minusing day;
+                new Date(datestring)
+        /if there a single argument and it's string
+let date = new Date('2017-08-09)
+date.toString().split(' ') --> ["Fri", "Jan", "26", "2018", "04:00:00", "GMT+0400", "(Armenia", "Standard", "Time)"]
+        new Date(year, month, date, hours, minutes, seconds, ms)
+        only first two arguments are obilagotary
+date = new Date(2011, 0, 1,0,0,0,0) --> // 1 Jan 2011, 00:00:00
+date = new Date(2020, 0) --> jun 1 2020
+            only argument for day is starting from 0 
+            miliseconds are starting from 0 to 999
+            month 0 to 11
+            year is same year.
+let date = new Date(2020, 12, 32) 2021 01 01;
+            this is example of more than enough argument it will turn over next one
+                    Acess date components 
+            there are methods to acces year month and so on from the date object 
+              getFullYear()//4 digit, getMonth() 0 to 11, getDate() 1 to 31, getHours() 0 to 23,getMinutes() 0 to 59, getSeconds(), getMiliseconds() 0 to 999
+                    All the methods above return the components relative to the local time zone.
+            there are also their UTC-counterparts
+let date = new Date() Thu Aug 20 2020 12:40:58 GMT+0400 (Armenia Standard Time)
+          we have also getUTCFullYear(), getUTC
+let utcHours = date.getUTCHours() --> 8
+let hours = date.getHours() 
+let something = date.getTime() // wtf 1597912858566
+                    Returns the timestamp for the date – a number of milliseconds passed from the January 1st of 1970 UTC+0
+new Date().getTimezoneOffset() // wtf -240
+             returns the difference between UTC and local time zone in minutes 
+             // if you are in timezone UTC-1, outputs 60
+             // if you are in timezone UTC+3, outputs -180
+                          Setting date components
+            the following methods allows us to set date\time components
+setFullYear(year, [month], [date])
+setMonth(month, [date])
+setDate(date)
+setHours(hour, [min], [sec], [ms])
+setMinutes(min, [sec], [ms])
+setSeconds(sec, [ms])
+setMilliseconds(ms)
+setTime(milliseconds)
+            Every one of them except setTime() has a UTC-variant, for instance: setUTCHours().
+let today = new Date();
+today.setHours(0);
+alert(today); // still today, but the hour is changed to 0
+today.setHours(0, 0, 0, 0);
+alert(today); // still today, now 00:00:00 sharp.     
+                              Autocorrection                   
+            The autocorrection is a very handy feature of Date objects. We can set out-of-range values, and it will auto-adjust itself.
+let date = new Date(2013, 0, 32); // 32 Jan 2013 ?!?
+alert(date); // ...is 1st Feb 2013!
+/
+let date = new Date(2016, 1, 28);
+date.setDate(date.getDate() + 2);
+alert( date ); // 1 Mar 2016    
+//
+let date = new Date();
+date.setSeconds(date.getSeconds() + 70);
+alert( date ); // shows the correct date  
+//
+let date = new Date(2016, 0, 2); // 2 Jan 2016
+date.setDate(1); // set day 1 of month
+alert( date );
+date.setDate(0); // min day is 1, so the last day of the previous month is assumed
+alert( date ); // 31 Dec 2015      
+                              Date to number, date diff
+            When a Date object is converted to number, it becomes the timestamp same as date.getTime():
+let date = new Date();
+alert(+date); // the number of milliseconds, same as date.getTime()
+//
+let start = new Date(); // start measuring time
+// do the job
+for (let i = 0; i < 100000; i++) {
+  let doSomething = i * i * i;
+}
+let end = new Date(); // end measuring time
+alert( `The loop took ${end - start} ms` );
+
+                                    Date.now()
+            If we only want to measure time, we don’t need the Date object.
+            There’s a special method Date.now() that returns the current timestamp.
+            It is semantically equivalent to new Date().getTime(), but it doesn’t create an intermediate Date object.
+            So it’s faster and doesn’t put pressure on garbage collection.
+            It is used mostly for convenience or when performance matters, like in games in JavaScript or other specialized applications.
+            So this is probably better:
+let start = Date.now(); // milliseconds count from 1 Jan 1970
+// do the job
+for (let i = 0; i < 100000; i++) {
+  let doSomething = i * i * i;
+}
+let end = Date.now(); // done
+alert( `The loop took ${end - start} ms` ); // subtract numbers, not dates
+                                    Benchmarking
+            If we want a reliable benchmark of CPU-hungry function, we should be careful.
+            Such performance measurements are often called “benchmarks”.
+            For instance, let’s measure two functions that calculate the difference between two dates: which one is faster?
+// we have date1 and date2, which function faster returns their difference in ms?
+function diffSubtract(date1, date2) {
+  return date2 - date1;
+}
+// or
+function diffGetTime(date1, date2) {
+  return date2.getTime() - date1.getTime();
+}
+
+
+
+                                    ...Rest and Spread 
+/function someFunction(a,b) {    example of rest 
+  return a+b
+}
+someFunction(1,2,3,4) // no it is not error but we will lose our 3 and 4 
+instead we will write 
+
+/function someFunction(...rest) {
+  let sum                               // rest is array wich will be our sets arguments
+  for(let value of rest) sum += value   // it is not have to be named ...rest we can give another name as ...dksfj
+}
+                  in this examples ...rest is rest not Spread but both syntax are same ...name
+                  and also in this example our rest is array but it can be object as well
+                  rest have to be last argument in function or it will cause an error 
+function some(a, ...args, b) // it is already not rigth syntax 
+
+
+        the argument variable
+There is also a special array-like object named arguments that contains all arguments by their index.it is also iterable
+it is not array and doeas not support array methods like arguments.map() or arguments.filter() 
+//**Arrow function do not have arguments
+88As we remember, arrow functions don’t have their own this. Now we know they don’t have the special arguments object either
+for(arg of arguments){}
+function forArguments(a,b,c) {
+  console.log(arguments.length); // forArguments(1,2,3,5) // result -> 4
+  console.log(arguments[0]);    // 1 :D
+}
+
+
+                                  Spread Syntax
+/
+Math.max(1,2,3,4,5) => 5
+but if we have some array and we don't want to use sort function 
+let arr = [1,2,3,4,5] how to solve this ? => Math.max(...arr) //we are putting all elements in the braces 
+            and also max of two or more arrays 
+let arr1 = [1,2,3,4,5], arr2 = [1,2,3,4,5,6], arr3 = [7,8,9];
+            Math.max(...arr1, ...arr2, arr3) same as // Math.max(1,2,3,4,5,1,2,3,4,5,6,7,8,9) :)
+            
+      also we can merge arrays without concat array method 
+arr1 = [...arr1, arr2] :D // [1,2,3,4,5,1,2,3,4,5,6]
+      notice that spread is not working only with arrays it is working with any iterable for inctance 
+let string = 'someString' let arr = [...string] // -> same as [...string.split('')] +:
+alternative way to solve this is Array.from(iterable) which return array :D 
+
+      Get a new copy of an array/object
+/we remember usin Object.assign()   let object = {arman: 16, ando:17}
+let obj = Object.assign({}//where to, object // which porperties)
+same thing with the spread syntax 
+let arr = [1,2,3]
+let arrCopy = [...arr]
+
 

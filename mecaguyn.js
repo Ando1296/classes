@@ -938,12 +938,26 @@ function replaceInSentence(string, array){
   }
   return string.join('');
 }
+//4.1
+function replaceInSentence(string, array){
+  string= string.split('');
+  string.map(element =>{
+    if(element === '_'){
+      return array.splice(0,1);
+    }
+  })
+  return string.join('')
+}
 //4.2 Given an array of strings.
 // Find the strings with maximum and minimum lengths in array.
 // Print the sum of their lengths
 function sumOfMaxMinLength(array){
   array = array.map(el => el.length).sort((a,b) => a - b);
   return array[0] + array[array.length - 1];
+}
+function sumOfMaxMinLength1(array){
+  array = array.sort((a,b) => a.length - b.length);
+  return array[0] + array[length - 1];  
 }
 //4.3 Given a sentence as a string.
 // Split it according to space and comma and create an array
@@ -1126,4 +1140,380 @@ function Chains(firstStep) {
 */
 function MathRandomWithoutRandom(){
   
+}
+function hundre(array){
+  return 5500 - array.reduce((a,b)=> a+b, 0);
+}
+//5.1 count of vowels in the string.
+function countVowels(string){
+  let countOfVowels = 0;
+  let vowels = new Set(['a','e','i','o','u']);
+  string = string.toLowerCase().split('');
+  string.forEach(item => {
+    if(vowels.has(item)){
+      countOfVowels++;
+    }
+  }) 
+  return countOfVowels;
+}
+//5.2 Given a large number. 
+//Find the difference between the most appeared largest and smallest digits
+function mostAppearedLargeSmalldif(number) {
+  const map = new Map();
+  const arrayFromDigits = Array.from(number.toString());
+  let smallestDigit = 10;
+  arrayFromDigits.forEach(digit => {
+    if (smallestDigit > +digit) {
+      smallestDigit = +digit;
+    }
+    map.set(+digit, (map.get(+digit) || 0) + 1);
+  });
+  let mostApearedDigit;
+  let countMostApeared = -1;
+  for(const [digit, count] of map){
+     if (countMostApeared == count && mostApearedDigit < digit || countMostApeared < count) {
+      mostApearedDigit = digit;
+      countMostApeared = count;
+    }
+  }
+  return mostApearedDigit - smallestDigit;
+}
+//5.3Write a function, which receives a string,
+// finds possible largest numbers in the string and returns their sum
+function sumStringsNumbers(string){
+  string = string.split('');
+  arrayOfNumbers = [];
+  let currentNumber = '';
+  string.forEach((item, index) => {
+    if(item === '-' && Number(string[index+1]) > -1){
+      currentNumber += item;
+    }
+    if(Number(item) > -1){
+      currentNumber += item;
+    }
+    if(!(Number(string[index+1]) > -1)){
+      arrayOfNumbers.push(Number(currentNumber));
+      currentNumber = '';
+    }
+  })
+  return arrayOfNumbers.reduce((a,b) => a + b);
+}
+//5.4 Given a word and a list of possible anagrams, select the correct sublist.
+function listOfAnagrams(string, array){
+  let result = [];
+  let check = string.split('');
+  array = array.map(item => item.split(''));
+  array.forEach(item => {
+    if(item.length != string.length){
+      return;
+    }
+    for(let str of item){
+      if(check.includes(str)){
+        check.splice(check.indexOf(str),1);
+      }
+    }
+    if(check.length == 0){
+      result.push(item.join(''));
+    }
+    check = string.split('');
+  })
+  return result;
+}
+//5.5Write a function to find longest substring in a given a string
+//without repeating characters except space character. If there are several,
+// return the last one. Consider that all letters are lowercase
+function longestSubstring(string){
+  string = string.split('');
+  let check = [];
+  let withoutRepeating = [];
+  string.forEach((element, index) => {
+    for(let i = index; i < string.length; i++){
+      if(!check.includes(string[i]) || string[i] == ' '){
+        check.push(string[i]);
+      }else{
+        withoutRepeating.push(check.join(''));
+        check = [];
+        return;
+      }
+    }
+  })
+  withoutRepeating = withoutRepeating.sort((a,b) => a.length - b.length);
+  return withoutRepeating[withoutRepeating.length - 1];
+}
+//5.5
+function longestSubstring1(string){
+  let maxSub;
+  let maxLength = 0;
+  let checkArray = [];
+  let check = 0;
+  string = string.split('');
+  first: for(let index in string) {
+    for(let i = index; i < string.length; i++) {
+      if(string[i] == string[i].toUpperCase()) {
+        checkArray.push(string[i]);
+      } else if(!checkArray.includes(string[i])) {
+        checkArray.push(string[i]);
+        check++;
+      } else if(checkArray.includes(string[i])) {
+        if(maxLength <= check) {
+          maxLength = check;
+          maxSub = checkArray.join('');
+          check = 0;
+          checkArray = [];
+          continue first;
+          
+        }
+      }
+       if(i == string.length - 1 && maxLength < check) {
+        return maxSub;
+      } else if(i == string.length - 1) {
+        return checkArray.join('')
+      }
+    }
+  } 
+}
+//
+function longestSubstring2(string){
+  string = string.split('');
+  let check = [];
+  let withoutRepeating = [];
+  string.forEach((element, index) => {
+    for(let i = index; i < string.length; i++){
+      if(!check.includes(string[i]) || string[i] == ' '){
+        check.push(string[i]);
+      }else{
+        withoutRepeating.push(check.join(''));
+        check = [];
+        return;
+      }
+    }
+  })
+  withoutRepeating = withoutRepeating.sort((a,b) => a.length - b.length);
+  return withoutRepeating[withoutRepeating.length - 1];
+}
+//5.6 Write a function which receives two strings
+//and removes appearances of the second string from the first one
+function removeAppearances(string, secondString){
+  return string.split(secondString).filter(item => item != '' && item != ' ').join('');
+}
+//5.7 edabit.com
+function concat(...args) {
+	let array = [...args];
+	array.forEach((item, index) => {
+		if(index == 0){
+			return;
+		}
+		array[0] = array[0].concat(item);
+	})
+	return array[0];
+}
+//5.8 edabit.com
+function capToFront(string) {
+	let result = [];
+	let arrayLower = []
+	string = string.split('');
+	string.forEach((item, index) => {
+		if(item == item.toUpperCase()){ 
+			result.push(item);
+		}else{
+			arrayLower.push(item)
+		}
+	})
+	return result.concat(arrayLower).join('')
+}
+//5.9 edabit.com
+function multiplyNums(nums) {
+	return Number(nums.split(', ').reduce((a,b) => Number(a) * Number(b)));
+}
+//5.10 edabit.com
+function replaceVowel(word) {
+	word = word.split('');
+	result = '';
+	let vowels = new Map([
+		['a','1'],
+		['e', '2'],
+		['i', '3'],
+		['o', '4'],
+		['u', '5']
+	])
+	word.forEach(item => {
+		if(vowels.has(item)){
+			result += vowels.get(item);
+		}else{
+			result += item;
+		}
+	})
+	return result
+}
+//edabit.com 
+function almostSortedEd(arr) {
+	let increasing = 0;
+	let decreasing = 0;
+	for(let index = 0; index < arr.length - 1; index++) {
+		if(arr[index] < arr[index+1]) {
+			increasing++
+		} else {
+			decreasing++
+		}
+	}
+	if(increasing === 1 || decreasing === 1) {
+		return true
+	} else {
+		return false
+	}
+}
+//6.1 1.Write a function that receives the time in 12-hour
+// AM/PM format and returns a string representation of the time in military (24-hour) format.
+function c24hourstime(string) {
+  string = string.split(':');
+  let pmAm = string[2][2] == 'P' ? 1: 0;
+  string[2] = string[2].split('').splice(0,2).join('');
+  string[0] = pmAm == 1 ? (string[0] == 12 ? string[0] : +string[0] + 12) : (string[0] == 12 ? '00' : string[0]); 
+  return string.join(':');
+}
+//6.2 2.Create a function that takes an array of date objects and return the
+// "longest streak" (i.e. number of consecutive days in a row).
+function ex62(array) {
+  if(array.length === 1 || array.length === 0) {
+    return 0
+  }
+  let arrayOfDates = array.map(item => new Date(item.date));
+  arrayOfDates.sort((a,b) => new Date(a) - new Date(b));
+  let check = 1;
+  let result = 1;
+  for(let i = 1; i < arrayOfDates.length; i++) {
+    if(arrayOfDates[i] - arrayOfDates[i - 1] == 24*3600*1000) {
+      check++
+    } else {
+      check = 1;
+    }
+    result = check > result ? check : result;
+  }
+  return result == 1 ? 0 : result;
+}
+
+//6.3 Create a function that returns the smallest number of changes it takes to transform one number into one 
+//with identical digits. A step is incrementing or decrementing a digit by one
+
+function ex63(number) {
+  let counter;
+  let check = 0;
+  number = number.toString().split('');
+  for(let digit of number) {
+    for(let counting of number) {
+      check += Math.abs(digit - counting);
+    }
+    if(counter === undefined) {
+      counter = check;
+    } else {
+      counter = counter > check ? check : counter;
+    }
+    check = 0;
+  }
+  return counter;
+}
+
+//6.4 Given a string of digits, output all the contiguous substrings of length n in that string.
+function ex64(string, number) {
+  string = string.split('');
+  let result = [];
+  for(let index in string) {
+    if(+index + number >= string.length) {
+      return result;
+    } else {
+      result.push(string.slice(+index, +index + number).join(''));
+    }
+  }
+}
+//6.5Given a word, compute the scrabble score for the given word.
+// To calculate scrabble score use the following table of scores:
+function ex65(string) {
+  let result = 0;
+  const array = [
+    new Set(['a', 'e', 'i', 'o', 'u', 'l', 'n', 'r', 's', 't']),
+    new Set(['d', 'g']),
+    new Set(['b','c','m','p']),
+    new Set(['f','h','v','w','y']),
+    new Set(['k']),
+    new Set(['j','x']),
+    new Set(['q','z'])
+  ];
+  for(let letter of string.split('')){
+    for(let index in array) {
+      result += array[index].has(letter) ? +index + 1 : 0;
+    }  
+  }
+  return result
+}
+//6.6 edabit.com **
+const SYMBOLS = ["♒", "♓","♈", "♉", "♊", "♋", "♌", "♍","♎", "♏", "♐", "♑",]; // first change places of last two;
+function zodiacSymbol(dateString) {
+  dateString = new Date(dateString.split(',')[0]);
+  const check = [
+    new Date('January 21'), new Date('February 20'), //+2
+    new Date('March 21'), new Date('April 21'),new Date('May 22 '),
+    new Date('June 22'),new Date('July 23'),new Date('August 23'),
+    new Date('September 24'),new Date('October 24'),new Date('November 23'),
+    new Date('December 22')
+  ];
+  for(let index in check) {
+    if(check[index] > dateString) {
+			if(+index - 1 < 0) {
+				return SYMBOLS[check.length - 1]
+			}
+        return SYMBOLS[+index - 1]
+    }
+  }
+}
+//6.7edabit 
+function ex67(array, n) {
+  const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday'];
+  for(let index in array) {
+    array[index] = week[(week.indexOf(array[index]) + n) % week.length]
+  }
+  return array
+}
+//6.8 edabit
+  function formatBlogPost(post, users) {
+    let map = new Map([
+      [0, 'January'],
+      [1, 'February'],
+      [2, 'March'],
+      [3, 'April'],
+      [4, 'May'],
+      [5, 'June'],
+      [6, 'July'],
+      [7, 'August'],
+      [8, 'September'],
+      [9, 'October'],
+      [10, 'November'],
+      [11, 'December']
+    ]);
+    let time = new Date(post.timestamp).toString().split(' ').splice(0,4);
+    time[0] += ','; time[1] = map.get(new Date(post.timestamp).getMonth());
+    time[2] += ',';
+    time = time.join(' ') + '\n';
+    let title = '# ' + post.title.replace(post.title[0], post.title[0].toUpperCase()) + '\n';
+    let writtenBy = 'Written by ' + '[' + users[post.userId - 1].firstName + ' ' + users[post.userId - 1].lastName +'](mailto:' + users[post.userId - 1].email +') on ' + time;
+    return title + '\n' + writtenBy + '\n' + '---\n' + '\n' + post.body;
+  };
+//6.9edabit
+function getDays(date1, date2) {
+	return Math.abs(new Date(date1) - new Date(date2)) / (24*3600*1000);
+}
+function vahanTas(array) {
+  let biggest;
+  let biggestSum;
+  let counter = 0;
+  for(let index in array) {
+    for(let i = index + 1; i <= array.length; i++) {
+      counter = array.slice(index, i).reduce((a,b) => a + b,0);
+      if(biggestSum === undefined || biggestSum <= counter) {
+        biggestSum = counter;
+        biggest = array.slice(index, i);
+      }
+      counter = 0;
+    }
+  }
+  return biggest;
 }
